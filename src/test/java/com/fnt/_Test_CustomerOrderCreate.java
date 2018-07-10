@@ -31,10 +31,10 @@ import com.nimbusds.jose.KeyLengthException;
 
 public class _Test_CustomerOrderCreate {
 
-	private static final String REST_CUSTOMER_END_POINT       = "http://localhost:8080/javaee7/rest/customer";
-	private static final String REST_ITEM_END_POINT           = "http://localhost:8080/javaee7/rest/item";
-	private static final String REST_CUSTOMER_ORDER_END_POINT = "http://localhost:8080/javaee7/rest/customerorder";
-	private static final String REST_QUEUE_END_POINT          = "http://localhost:8080/javaee7/rest/queue";
+	private static final String REST_CUSTOMER_END_POINT       = "http://localhost:8080/server2/rest/customer";
+	private static final String REST_ITEM_END_POINT           = "http://localhost:8080/server2/rest/item";
+	private static final String REST_CUSTOMER_ORDER_END_POINT = "http://localhost:8080/server2/rest/customerorder";
+	private static final String REST_QUEUE_END_POINT          = "http://localhost:8080/server2/rest/queue";
 	private static final String LOGIN_END_POINT               = "http://localhost:8080/auth/rest/login";
 	private static final float NUMBER_OF_CUSTOMERORDERS = 1000;
 

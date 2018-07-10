@@ -27,9 +27,9 @@ import com.nimbusds.jose.KeyLengthException;
 
 public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 
-	private final String REST_CUSTOMER_END_POINT = "http://localhost:8080/javaee7/rest/customer";
-	private final String REST_ITEM_END_POINT = "http://localhost:8080/javaee7/rest/item";
-	private String REST_CUSTOMER_ORDER_END_POINT = "http://localhost:8080/javaee7/rest/customerorder";
+	private final String REST_CUSTOMER_END_POINT = "http://localhost:8080/server2/rest/customer";
+	private final String REST_ITEM_END_POINT = "http://localhost:8080/server2/rest/item";
+	private String REST_CUSTOMER_ORDER_END_POINT = "http://localhost:8080/server2/rest/customerorder";
 	private final String LOGIN_END_POINT = "http://localhost:8080/auth/rest/login";
 	private   float NUMBER_OF_CUSTOMERORDERS;
 	private   int NUMBER_OF_LINES_PER_ORDER;
