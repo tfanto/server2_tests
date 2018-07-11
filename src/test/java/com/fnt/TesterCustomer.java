@@ -22,7 +22,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fnt.model.Customer;
+import com.fnt.entity.Customer;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.KeyLengthException;
 
@@ -79,10 +79,9 @@ public class TesterCustomer {
 	public void create5000() throws KeyLengthException, JsonProcessingException, JOSEException {
 
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
-		
+
 		Response responseDelete = client.target(REST_CUSTOMER_END_POINT).path("all").request(MediaType.APPLICATION_JSON)
 				.header("Authorization", jwe).delete(Response.class);
-
 
 		for (int i = 0; i < 50000; i++) {
 
@@ -122,13 +121,8 @@ public class TesterCustomer {
 
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
-		
 		Response responseDelete = client.target(REST_CUSTOMER_END_POINT).path("all").request(MediaType.APPLICATION_JSON)
 				.header("Authorization", jwe).delete(Response.class);
-
-
-		
-
 
 		Customer customer = createCustomerHelper();
 
@@ -154,8 +148,8 @@ public class TesterCustomer {
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
 		// remove if exists
-		client.target(REST_CUSTOMER_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-				.delete(Response.class);
+		client.target(REST_CUSTOMER_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).delete(Response.class);
 
 		// and add so we can update
 		Customer customer = createCustomerHelper();
@@ -192,8 +186,8 @@ public class TesterCustomer {
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
 		// remove if exists
-		client.target(REST_CUSTOMER_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-				.delete(Response.class);
+		client.target(REST_CUSTOMER_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).delete(Response.class);
 
 		// and add so we can update
 		Customer customer = createCustomerHelper();
@@ -235,7 +229,7 @@ public class TesterCustomer {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getAllCustomerIDS() throws KeyLengthException, JsonProcessingException, JOSEException {
 
@@ -258,16 +252,14 @@ public class TesterCustomer {
 		}
 	}
 
-	
-
 	@Test
 	public void get() throws KeyLengthException, JsonProcessingException, JOSEException {
 
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
 		// remove if exists
-		client.target(REST_CUSTOMER_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-				.delete(Response.class);
+		client.target(REST_CUSTOMER_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).delete(Response.class);
 
 		// and add so we can update
 		Customer customer = createCustomerHelper();
@@ -275,8 +267,8 @@ public class TesterCustomer {
 		client.target(REST_CUSTOMER_END_POINT).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
 				.post(Entity.json(customer), Response.class);
 
-		Response response = client.target(REST_CUSTOMER_END_POINT).path(customer.getId()).request(MediaType.APPLICATION_JSON)
-				.header("Authorization", jwe).get(Response.class);
+		Response response = client.target(REST_CUSTOMER_END_POINT).path(customer.getId())
+				.request(MediaType.APPLICATION_JSON).header("Authorization", jwe).get(Response.class);
 
 		int status = response.getStatus();
 		if (status == OK) {

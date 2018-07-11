@@ -21,21 +21,21 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fnt.model.CustomerOrder;
-import com.fnt.model.CustomerOrderHead;
-import com.fnt.model.CustomerOrderLine;
-import com.fnt.model.CustomerOrderLinePK;
-import com.fnt.model.ItemView1;
+import com.fnt.dto.CustomerOrder;
+import com.fnt.entity.CustomerOrderHead;
+import com.fnt.entity.CustomerOrderLine;
+import com.fnt.entity.CustomerOrderLinePK;
+import com.fnt.entity.ItemView1;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.KeyLengthException;
 
 public class _Test_CustomerOrderCreate {
 
-	private static final String REST_CUSTOMER_END_POINT       = "http://localhost:8080/server2/rest/customer";
-	private static final String REST_ITEM_END_POINT           = "http://localhost:8080/server2/rest/item";
+	private static final String REST_CUSTOMER_END_POINT = "http://localhost:8080/server2/rest/customer";
+	private static final String REST_ITEM_END_POINT = "http://localhost:8080/server2/rest/item";
 	private static final String REST_CUSTOMER_ORDER_END_POINT = "http://localhost:8080/server2/rest/customerorder";
-	private static final String REST_QUEUE_END_POINT          = "http://localhost:8080/server2/rest/queue";
-	private static final String LOGIN_END_POINT               = "http://localhost:8080/auth/rest/login";
+	private static final String REST_QUEUE_END_POINT = "http://localhost:8080/server2/rest/queue";
+	private static final String LOGIN_END_POINT = "http://localhost:8080/auth/rest/login";
 	private static final float NUMBER_OF_CUSTOMERORDERS = 1000;
 
 	private Random rnd = new Random();
@@ -229,10 +229,10 @@ public class _Test_CustomerOrderCreate {
 	@Test
 	public void browseQueue() {
 
-		Response response = client.target(REST_QUEUE_END_POINT).path("browse").request(MediaType.APPLICATION_JSON).header("Authorization", jwe).get(Response.class);
-		 System.out.println("status " + response.getStatus()); 
-		
-	}
+		Response response = client.target(REST_QUEUE_END_POINT).path("browse").request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).get(Response.class);
+		System.out.println("status " + response.getStatus());
 
+	}
 
 }

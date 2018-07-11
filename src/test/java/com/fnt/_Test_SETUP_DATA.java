@@ -18,9 +18,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fnt.model.Customer;
-import com.fnt.model.Item;
-import com.fnt.model.NumberSerie;
+import com.fnt.entity.Customer;
+import com.fnt.entity.Item;
+import com.fnt.entity.NumberSerie;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.KeyLengthException;
 
@@ -90,23 +90,20 @@ public class _Test_SETUP_DATA {
 				}
 			}
 		}
-		
+
 		// login
 		jwe = getJWEFromSecurityServer(uuu, ppp);
 
-		
 		if (createNumberSeries) {
 
 			NumberSerie ns = new NumberSerie();
 			ns.setName("CUSTOMER_ORDER");
 			ns.setValue(0);
-			
-			client.target(NUMBERSERIES_END_POINT).request(MediaType.APPLICATION_JSON)
-			.header("Authorization", jwe).post(Entity.json(ns), Response.class);
 
+			client.target(NUMBERSERIES_END_POINT).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
+					.post(Entity.json(ns), Response.class);
 
 		}
-
 
 	}
 

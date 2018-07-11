@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fnt.model.Item;
+import com.fnt.entity.Item;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.KeyLengthException;
 
@@ -75,10 +75,9 @@ public class TesterItem {
 	public void create5000() throws KeyLengthException, JsonProcessingException, JOSEException {
 
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
-		
+
 		Response responseDelete = client.target(REST_ITEM_END_POINT).path("all").request(MediaType.APPLICATION_JSON)
 				.header("Authorization", jwe).delete(Response.class);
-
 
 		for (int i = 0; i < 500; i++) {
 
@@ -156,8 +155,8 @@ public class TesterItem {
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
 		// remove if exists
-		client.target(REST_ITEM_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-				.delete(Response.class);
+		client.target(REST_ITEM_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).delete(Response.class);
 
 		// and add so we can update
 		Item item = createItemHelper();
@@ -194,8 +193,8 @@ public class TesterItem {
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
 		// remove if exists
-		client.target(REST_ITEM_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-				.delete(Response.class);
+		client.target(REST_ITEM_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).delete(Response.class);
 
 		// and add so we can update
 		Item item = createItemHelper();
@@ -244,8 +243,8 @@ public class TesterItem {
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
 		// remove if exists
-		client.target(REST_ITEM_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-				.delete(Response.class);
+		client.target(REST_ITEM_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).delete(Response.class);
 
 		// and add so we can update
 		Item item = createItemHelper();
@@ -296,7 +295,7 @@ public class TesterItem {
 
 		}
 	}
-	
+
 	@Test
 	public void getAllItemIDS() throws KeyLengthException, JsonProcessingException, JOSEException {
 
@@ -318,9 +317,6 @@ public class TesterItem {
 			Assert.fail();
 		}
 	}
-
-	
-	
 
 	// TypeReference typeref = new TypeReference<List<CustomCode>>() {};
 	// List<CustomCode> codes = mapper.readValue(json, typeref); return codes;

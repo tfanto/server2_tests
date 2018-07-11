@@ -17,11 +17,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fnt.model.CustomerOrder;
-import com.fnt.model.CustomerOrderHead;
-import com.fnt.model.CustomerOrderLine;
-import com.fnt.model.CustomerOrderLinePK;
-import com.fnt.model.ItemView1;
+import com.fnt.dto.CustomerOrder;
+import com.fnt.entity.CustomerOrderHead;
+import com.fnt.entity.CustomerOrderLine;
+import com.fnt.entity.CustomerOrderLinePK;
+import com.fnt.entity.ItemView1;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.KeyLengthException;
 
