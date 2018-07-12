@@ -52,7 +52,7 @@ public class _Test_CustomerOrderCreate {
 
 	private static Client client;
 	private static String jwe;
-	private static List<String> customerIds;
+	private static List<Long> customerIds;
 	private static List<ItemView1> itemIds;
 
 	@BeforeClass
@@ -192,13 +192,13 @@ public class _Test_CustomerOrderCreate {
 		}
 	}
 
-	public static List<String> getAllCustomerIDS() throws KeyLengthException, JsonProcessingException, JOSEException {
+	public static List<Long> getAllCustomerIDS() throws KeyLengthException, JsonProcessingException, JOSEException {
 
 		Response response = client.target(REST_CUSTOMER_END_POINT).path("ids").request(MediaType.APPLICATION_JSON)
 				.header("Authorization", jwe).get(Response.class);
 		int status = response.getStatus();
 		if (status == OK) {
-			List<String> theList = response.readEntity(new GenericType<List<String>>() {
+			List<Long> theList = response.readEntity(new GenericType<List<Long>>() {
 			});
 			return theList;
 		} else if (status == FORBIDDEN) {
