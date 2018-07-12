@@ -173,13 +173,13 @@ public class _Test_SETUP_DATA {
 			item.setItemnumber("ITEM_" + nbr);
 			item.setDescription("Artikelbeskrivning för ART_" + nbr);
 			int inStock = rnd.nextInt(2000) + 5;
-			item.setInStock(inStock);
-			item.setOrderingPoint(item.getInStock() / 3);
+			item.setInstock(inStock);
+			item.setOrderingpoint(item.getInstock() / 3);
 
 			double price = (rnd.nextDouble() * 1000) + 15;
 
 			item.setPrice(price);
-			item.setPurchasePrice(item.getPrice() / 2);
+			item.setPurchaseprice(item.getPrice() / 2);
 
 			Response response = client.target(REST_ITEM_END_POINT).request(MediaType.APPLICATION_JSON)
 					.header("Authorization", jwe).post(Entity.json(item), Response.class);

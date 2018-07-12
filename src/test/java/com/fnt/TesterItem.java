@@ -88,13 +88,13 @@ public class TesterItem {
 			item.setItemnumber("MUT_" + nbr);
 			item.setDescription("Mutter");
 			int inStock = rnd.nextInt(2000) + 5;
-			item.setInStock(inStock);
-			item.setOrderingPoint(item.getInStock() / 3);
+			item.setInstock(inStock);
+			item.setOrderingpoint(item.getInstock() / 3);
 
 			double price = (rnd.nextDouble() * 1000) + 15;
 
 			item.setPrice(price);
-			item.setPurchasePrice(item.getPrice() / 2);
+			item.setPurchaseprice(item.getPrice() / 2);
 
 			Response response = client.target(REST_ITEM_END_POINT).request(MediaType.APPLICATION_JSON)
 					.header("Authorization", jwe).post(Entity.json(item), Response.class);
@@ -118,11 +118,11 @@ public class TesterItem {
 		item.setItemnumber(itemNumber);
 		item.setDescription("Mutter");
 		int inStock = 100;
-		item.setInStock(inStock);
-		item.setOrderingPoint(15);
+		item.setInstock(inStock);
+		item.setOrderingpoint(15);
 		double price = 25.50;
 		item.setPrice(price);
-		item.setPurchasePrice(item.getPrice() / 2);
+		item.setPurchaseprice(item.getPrice() / 2);
 		return item;
 
 	}
