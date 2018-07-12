@@ -22,13 +22,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fnt.model.Customer;
+import com.fnt.entity.Customer;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.KeyLengthException;
 
 public class TesterCustomer {
 
-	private static final String REST_CUSTOMER_END_POINT = "http://localhost:8080/javaee7/rest/customer";
+	private static final String REST_CUSTOMER_END_POINT = "http://localhost:8080/server2/rest/customer";
 	private static final String LOGIN_END_POINT = "http://localhost:8080/auth/rest/login";
 
 	@SuppressWarnings("unused")
@@ -72,6 +72,7 @@ public class TesterCustomer {
 
 		@SuppressWarnings("unused")
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
+		System.out.println(jwe);
 	}
 
 	@SuppressWarnings("unused")
@@ -79,18 +80,18 @@ public class TesterCustomer {
 	public void create5000() throws KeyLengthException, JsonProcessingException, JOSEException {
 
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
-		
+
 		Response responseDelete = client.target(REST_CUSTOMER_END_POINT).path("all").request(MediaType.APPLICATION_JSON)
 				.header("Authorization", jwe).delete(Response.class);
-
 
 		for (int i = 0; i < 50000; i++) {
 
 			Customer customer = new Customer();
 
 			String nbr = String.format("%05d", i);
-			customer.setId("CUNO_" + nbr);
+			customer.setCustomernumber("CUNO_" + nbr);
 			customer.setName("Name_" + i);
+			customer.setDescription("Description_" + i);
 
 			Response response = client.target(REST_CUSTOMER_END_POINT).request(MediaType.APPLICATION_JSON)
 					.header("Authorization", jwe).post(Entity.json(customer), Response.class);
@@ -111,8 +112,9 @@ public class TesterCustomer {
 
 	private Customer createCustomerHelper() {
 		Customer customer = new Customer();
-		customer.setId("CUNO_" + UUID.randomUUID().toString());
+		customer.setCustomernumber("CUNO_" + UUID.randomUUID().toString());
 		customer.setName("A high valued customer");
+		customer.setDescription("A high valued customers description");
 		return customer;
 
 	}
@@ -122,13 +124,8 @@ public class TesterCustomer {
 
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
-		
 		Response responseDelete = client.target(REST_CUSTOMER_END_POINT).path("all").request(MediaType.APPLICATION_JSON)
 				.header("Authorization", jwe).delete(Response.class);
-
-
-		
-
 
 		Customer customer = createCustomerHelper();
 
@@ -154,8 +151,8 @@ public class TesterCustomer {
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
 		// remove if exists
-		client.target(REST_CUSTOMER_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-				.delete(Response.class);
+		client.target(REST_CUSTOMER_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).delete(Response.class);
 
 		// and add so we can update
 		Customer customer = createCustomerHelper();
@@ -192,8 +189,8 @@ public class TesterCustomer {
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
 		// remove if exists
-		client.target(REST_CUSTOMER_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-				.delete(Response.class);
+		client.target(REST_CUSTOMER_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).delete(Response.class);
 
 		// and add so we can update
 		Customer customer = createCustomerHelper();
@@ -235,7 +232,7 @@ public class TesterCustomer {
 			Assert.fail();
 		}
 	}
-	
+
 	@Test
 	public void getAllCustomerIDS() throws KeyLengthException, JsonProcessingException, JOSEException {
 
@@ -258,16 +255,14 @@ public class TesterCustomer {
 		}
 	}
 
-	
-
 	@Test
 	public void get() throws KeyLengthException, JsonProcessingException, JOSEException {
 
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
 		// remove if exists
-		client.target(REST_CUSTOMER_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-				.delete(Response.class);
+		client.target(REST_CUSTOMER_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).delete(Response.class);
 
 		// and add so we can update
 		Customer customer = createCustomerHelper();
@@ -275,7 +270,8 @@ public class TesterCustomer {
 		client.target(REST_CUSTOMER_END_POINT).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
 				.post(Entity.json(customer), Response.class);
 
-		Response response = client.target(REST_CUSTOMER_END_POINT).path(customer.getId()).request(MediaType.APPLICATION_JSON)
+		String theId = String.valueOf(customer.getId());
+		Response response = client.target(REST_CUSTOMER_END_POINT).path(theId).request(MediaType.APPLICATION_JSON)
 				.header("Authorization", jwe).get(Response.class);
 
 		int status = response.getStatus();

@@ -17,22 +17,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fnt.model.CustomerOrder;
-import com.fnt.model.CustomerOrderHead;
-import com.fnt.model.CustomerOrderLine;
-import com.fnt.model.CustomerOrderLinePK;
-import com.fnt.model.ItemView1;
+import com.fnt.dto.CustomerOrder;
+import com.fnt.entity.CustomerOrderHead;
+import com.fnt.entity.CustomerOrderLine;
+import com.fnt.entity.CustomerOrderLinePK;
+import com.fnt.entity.ItemView1;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.KeyLengthException;
 
 public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 
-	private final String REST_CUSTOMER_END_POINT = "http://localhost:8080/javaee7/rest/customer";
-	private final String REST_ITEM_END_POINT = "http://localhost:8080/javaee7/rest/item";
-	private String REST_CUSTOMER_ORDER_END_POINT = "http://localhost:8080/javaee7/rest/customerorder";
+	private final String REST_CUSTOMER_END_POINT = "http://localhost:8080/server2/rest/customer";
+	private final String REST_ITEM_END_POINT = "http://localhost:8080/server2/rest/item";
+	private String REST_CUSTOMER_ORDER_END_POINT = "http://localhost:8080/server2/rest/customerorder";
 	private final String LOGIN_END_POINT = "http://localhost:8080/auth/rest/login";
-	private   float NUMBER_OF_CUSTOMERORDERS;
-	private   int NUMBER_OF_LINES_PER_ORDER;
+	private float NUMBER_OF_CUSTOMERORDERS;
+	private int NUMBER_OF_LINES_PER_ORDER;
 
 	private Random rnd = new Random();
 
@@ -48,17 +48,15 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 
 	private Client client;
 	private String jwe;
-	private List<String> customerIds;
+	private List<Long> customerIds;
 	private List<ItemView1> itemIds;
-	
-	
-	_Test_CustomerOrderCreateStandAlone(float NUMBER_OF_CUSTOMERORDERS, int NUMBER_OF_LINES_PER_ORDER){
-		
+
+	_Test_CustomerOrderCreateStandAlone(float NUMBER_OF_CUSTOMERORDERS, int NUMBER_OF_LINES_PER_ORDER) {
+
 		this.NUMBER_OF_CUSTOMERORDERS = NUMBER_OF_CUSTOMERORDERS;
 		this.NUMBER_OF_LINES_PER_ORDER = NUMBER_OF_LINES_PER_ORDER;
-		
+
 	}
-	
 
 	public void init() throws KeyLengthException, JsonProcessingException, JOSEException {
 
@@ -89,7 +87,8 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 
 		// long then = System.currentTimeMillis();
 
-		for (int i = 0; i < NUMBER_OF_CUSTOMERORDERS; i++) {
+//		for (int i = 0; i < NUMBER_OF_CUSTOMERORDERS; i++) {
+			for (int i = 0; i < 1; i++) {
 
 			CustomerOrder customerOrder = createCustomerOrderHelper();
 
@@ -184,13 +183,13 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 		}
 	}
 
-	public List<String> getAllCustomerIDS() throws KeyLengthException, JsonProcessingException, JOSEException {
+	public List<Long> getAllCustomerIDS() throws KeyLengthException, JsonProcessingException, JOSEException {
 
 		Response response = client.target(REST_CUSTOMER_END_POINT).path("ids").request(MediaType.APPLICATION_JSON)
 				.header("Authorization", jwe).get(Response.class);
 		int status = response.getStatus();
 		if (status == OK) {
-			List<String> theList = response.readEntity(new GenericType<List<String>>() {
+			List<Long> theList = response.readEntity(new GenericType<List<Long>>() {
 			});
 			return theList;
 		} else if (status == FORBIDDEN) {
@@ -223,29 +222,30 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 
 		long then = System.currentTimeMillis();
 		List<Thread> threads = new ArrayList<>();
-		
-		float number_of_customerOrders_per_thread = 1000; 
+
+		float number_of_customerOrders_per_thread = 1000;
 		int number_of_threads = 10;
 		int number_of_lines_per_order = 1000;
 
 		for (int i = 0; i < number_of_threads; i++) {
 
-			_Test_CustomerOrderCreateStandAlone pgm = new _Test_CustomerOrderCreateStandAlone(number_of_customerOrders_per_thread,number_of_lines_per_order);
+			_Test_CustomerOrderCreateStandAlone pgm = new _Test_CustomerOrderCreateStandAlone(
+					number_of_customerOrders_per_thread, number_of_lines_per_order);
 			pgm.init();
 			Thread t = new Thread(pgm);
 			threads.add(t);
 			t.start();
 
 		}
-		
+
 		for (Thread thread : threads) {
 			thread.join();
 		}
-		
+
 		float orders = number_of_customerOrders_per_thread * number_of_threads;
 		float lines = orders * number_of_lines_per_order;
 		float totalrecs = lines + orders;
-		
+
 		long now = System.currentTimeMillis();
 		float millisecs = now - then;
 		float perRec = millisecs / orders;
@@ -257,8 +257,6 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 		System.out.println("Rader per order " + number_of_lines_per_order);
 		System.out.println("Snitt / trans   " + perRec);
 		System.out.println("Snitt / record  " + perRec2);
-
-
 
 	}
 

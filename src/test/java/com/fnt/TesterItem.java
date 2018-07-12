@@ -21,13 +21,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fnt.model.Item;
+import com.fnt.entity.Item;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.KeyLengthException;
 
 public class TesterItem {
 
-	private static final String REST_ITEM_END_POINT = "http://localhost:8080/javaee7/rest/item";
+	private static final String REST_ITEM_END_POINT = "http://localhost:8080/server2/rest/item";
 	private static final String LOGIN_END_POINT = "http://localhost:8080/auth/rest/login";
 
 	private Random rnd = new Random();
@@ -69,32 +69,32 @@ public class TesterItem {
 	public void testCreateJWE() throws KeyLengthException, JsonProcessingException, JOSEException {
 
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
+		System.out.println(jwe);
 	}
 
 	@Test
 	public void create5000() throws KeyLengthException, JsonProcessingException, JOSEException {
 
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
-		
+
 		Response responseDelete = client.target(REST_ITEM_END_POINT).path("all").request(MediaType.APPLICATION_JSON)
 				.header("Authorization", jwe).delete(Response.class);
-
 
 		for (int i = 0; i < 500; i++) {
 
 			Item item = new Item();
 
 			String nbr = String.format("%05d", i);
-			item.setId("MUT_" + nbr);
+			item.setItemnumber("MUT_" + nbr);
 			item.setDescription("Mutter");
 			int inStock = rnd.nextInt(2000) + 5;
-			item.setInStock(inStock);
-			item.setOrderingPoint(item.getInStock() / 3);
+			item.setInstock(inStock);
+			item.setOrderingpoint(item.getInstock() / 3);
 
 			double price = (rnd.nextDouble() * 1000) + 15;
 
 			item.setPrice(price);
-			item.setPurchasePrice(item.getPrice() / 2);
+			item.setPurchaseprice(item.getPrice() / 2);
 
 			Response response = client.target(REST_ITEM_END_POINT).request(MediaType.APPLICATION_JSON)
 					.header("Authorization", jwe).post(Entity.json(item), Response.class);
@@ -115,14 +115,14 @@ public class TesterItem {
 
 	private Item createItemHelper() {
 		Item item = new Item();
-		item.setId(itemNumber);
+		item.setItemnumber(itemNumber);
 		item.setDescription("Mutter");
 		int inStock = 100;
-		item.setInStock(inStock);
-		item.setOrderingPoint(15);
+		item.setInstock(inStock);
+		item.setOrderingpoint(15);
 		double price = 25.50;
 		item.setPrice(price);
-		item.setPurchasePrice(item.getPrice() / 2);
+		item.setPurchaseprice(item.getPrice() / 2);
 		return item;
 
 	}
@@ -156,8 +156,8 @@ public class TesterItem {
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
 		// remove if exists
-		client.target(REST_ITEM_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-				.delete(Response.class);
+		client.target(REST_ITEM_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).delete(Response.class);
 
 		// and add so we can update
 		Item item = createItemHelper();
@@ -194,8 +194,8 @@ public class TesterItem {
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
 		// remove if exists
-		client.target(REST_ITEM_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-				.delete(Response.class);
+		client.target(REST_ITEM_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).delete(Response.class);
 
 		// and add so we can update
 		Item item = createItemHelper();
@@ -244,16 +244,18 @@ public class TesterItem {
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
 
 		// remove if exists
-		client.target(REST_ITEM_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-				.delete(Response.class);
+		client.target(REST_ITEM_END_POINT).path(itemNumber).request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).delete(Response.class);
 
 		// and add so we can update
 		Item item = createItemHelper();
+		item.setId(1004L);
 
 		client.target(REST_ITEM_END_POINT).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
 				.post(Entity.json(item), Response.class);
 
-		Response response = client.target(REST_ITEM_END_POINT).path(item.getId()).request(MediaType.APPLICATION_JSON)
+		String theId = String.valueOf(item.getId().intValue());
+		Response response = client.target(REST_ITEM_END_POINT).path(theId).request(MediaType.APPLICATION_JSON)
 				.header("Authorization", jwe).get(Response.class);
 
 		int status = response.getStatus();
@@ -296,7 +298,7 @@ public class TesterItem {
 
 		}
 	}
-	
+
 	@Test
 	public void getAllItemIDS() throws KeyLengthException, JsonProcessingException, JOSEException {
 
@@ -318,9 +320,6 @@ public class TesterItem {
 			Assert.fail();
 		}
 	}
-
-	
-	
 
 	// TypeReference typeref = new TypeReference<List<CustomCode>>() {};
 	// List<CustomCode> codes = mapper.readValue(json, typeref); return codes;

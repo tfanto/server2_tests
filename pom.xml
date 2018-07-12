@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.fanto</groupId>
@@ -8,9 +9,18 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<model2.version>0.0.1-SNAPSHOT</model2.version>
+
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.fnt</groupId>
+			<artifactId>model2</artifactId>
+			<version>${model2.version}</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
@@ -58,7 +68,7 @@
 			<artifactId>nimbus-jose-jwt</artifactId>
 			<version>5.10</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>

@@ -18,9 +18,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fnt.model.Customer;
-import com.fnt.model.Item;
-import com.fnt.model.NumberSerie;
+import com.fnt.entity.Customer;
+import com.fnt.entity.Item;
+import com.fnt.entity.NumberSerie;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.KeyLengthException;
 
@@ -29,10 +29,10 @@ public class _Test_SETUP_DATA {
 	private static boolean createLogins = false;
 	private static boolean createNumberSeries = false;
 
-	private static final String REST_CUSTOMER_END_POINT = "http://localhost:8080/javaee7/rest/customer";
-	private static final String REST_ITEM_END_POINT = "http://localhost:8080/javaee7/rest/item";
+	private static final String REST_CUSTOMER_END_POINT = "http://localhost:8080/server2/rest/customer";
+	private static final String REST_ITEM_END_POINT = "http://localhost:8080/server2/rest/item";
 	private static final String USER_REGISTRATION_END_POINT = "http://localhost:8080/auth/rest/user";
-	private static final String NUMBERSERIES_END_POINT = "http://localhost:8080/javaee7/rest/ns";
+	private static final String NUMBERSERIES_END_POINT = "http://localhost:8080/server2/rest/ns";
 
 	private static final String LOGIN_END_POINT = "http://localhost:8080/auth/rest/login";
 	private static final int NUMBER_OF_CUSTOMERS = 10000;
@@ -90,23 +90,20 @@ public class _Test_SETUP_DATA {
 				}
 			}
 		}
-		
+
 		// login
 		jwe = getJWEFromSecurityServer(uuu, ppp);
 
-		
 		if (createNumberSeries) {
 
 			NumberSerie ns = new NumberSerie();
 			ns.setName("CUSTOMER_ORDER");
 			ns.setValue(0);
-			
-			client.target(NUMBERSERIES_END_POINT).request(MediaType.APPLICATION_JSON)
-			.header("Authorization", jwe).post(Entity.json(ns), Response.class);
 
+			client.target(NUMBERSERIES_END_POINT).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
+					.post(Entity.json(ns), Response.class);
 
 		}
-
 
 	}
 
@@ -128,8 +125,9 @@ public class _Test_SETUP_DATA {
 		for (int i = 0; i < NUMBER_OF_CUSTOMERS; i++) {
 
 			Customer customer = new Customer();
-			customer.setId("CUNO_" + i);
+			customer.setCustomernumber("CUNO_" + i);
 			customer.setName("CustomerName_" + i);
+			customer.setDescription("Description_" + i);
 
 			Response response = client.target(REST_CUSTOMER_END_POINT).request(MediaType.APPLICATION_JSON)
 					.header("Authorization", jwe).post(Entity.json(customer), Response.class);
@@ -172,16 +170,16 @@ public class _Test_SETUP_DATA {
 			Item item = new Item();
 
 			String nbr = String.format("%05d", i);
-			item.setId("ITEM_" + nbr);
+			item.setItemnumber("ITEM_" + nbr);
 			item.setDescription("Artikelbeskrivning för ART_" + nbr);
 			int inStock = rnd.nextInt(2000) + 5;
-			item.setInStock(inStock);
-			item.setOrderingPoint(item.getInStock() / 3);
+			item.setInstock(inStock);
+			item.setOrderingpoint(item.getInstock() / 3);
 
 			double price = (rnd.nextDouble() * 1000) + 15;
 
 			item.setPrice(price);
-			item.setPurchasePrice(item.getPrice() / 2);
+			item.setPurchaseprice(item.getPrice() / 2);
 
 			Response response = client.target(REST_ITEM_END_POINT).request(MediaType.APPLICATION_JSON)
 					.header("Authorization", jwe).post(Entity.json(item), Response.class);
