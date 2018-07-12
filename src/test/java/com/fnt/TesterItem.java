@@ -27,7 +27,7 @@ import com.nimbusds.jose.KeyLengthException;
 
 public class TesterItem {
 
-	private static final String REST_ITEM_END_POINT = "http://localhost:8080/javaee7/rest/item";
+	private static final String REST_ITEM_END_POINT = "http://localhost:8080/server2/rest/item";
 	private static final String LOGIN_END_POINT = "http://localhost:8080/auth/rest/login";
 
 	private Random rnd = new Random();
@@ -69,6 +69,7 @@ public class TesterItem {
 	public void testCreateJWE() throws KeyLengthException, JsonProcessingException, JOSEException {
 
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
+		System.out.println(jwe);
 	}
 
 	@Test
@@ -84,7 +85,7 @@ public class TesterItem {
 			Item item = new Item();
 
 			String nbr = String.format("%05d", i);
-			item.setId("MUT_" + nbr);
+			item.setItemnumber("MUT_" + nbr);
 			item.setDescription("Mutter");
 			int inStock = rnd.nextInt(2000) + 5;
 			item.setInStock(inStock);
@@ -114,7 +115,7 @@ public class TesterItem {
 
 	private Item createItemHelper() {
 		Item item = new Item();
-		item.setId(itemNumber);
+		item.setItemnumber(itemNumber);
 		item.setDescription("Mutter");
 		int inStock = 100;
 		item.setInStock(inStock);
@@ -248,11 +249,13 @@ public class TesterItem {
 
 		// and add so we can update
 		Item item = createItemHelper();
+		item.setId(1004L);
 
 		client.target(REST_ITEM_END_POINT).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
 				.post(Entity.json(item), Response.class);
 
-		Response response = client.target(REST_ITEM_END_POINT).path(item.getId()).request(MediaType.APPLICATION_JSON)
+		String theId = String.valueOf(item.getId().intValue());
+		Response response = client.target(REST_ITEM_END_POINT).path(theId).request(MediaType.APPLICATION_JSON)
 				.header("Authorization", jwe).get(Response.class);
 
 		int status = response.getStatus();

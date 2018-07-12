@@ -28,7 +28,7 @@ import com.nimbusds.jose.KeyLengthException;
 
 public class TesterCustomer {
 
-	private static final String REST_CUSTOMER_END_POINT = "http://localhost:8080/javaee7/rest/customer";
+	private static final String REST_CUSTOMER_END_POINT = "http://localhost:8080/server2/rest/customer";
 	private static final String LOGIN_END_POINT = "http://localhost:8080/auth/rest/login";
 
 	@SuppressWarnings("unused")
@@ -72,6 +72,7 @@ public class TesterCustomer {
 
 		@SuppressWarnings("unused")
 		String jwe = getJWEFromSecurityServer(uuu, ppp);
+		System.out.println(jwe);
 	}
 
 	@SuppressWarnings("unused")
@@ -88,8 +89,9 @@ public class TesterCustomer {
 			Customer customer = new Customer();
 
 			String nbr = String.format("%05d", i);
-			customer.setId("CUNO_" + nbr);
+			customer.setCustomernumber("CUNO_" + nbr);
 			customer.setName("Name_" + i);
+			customer.setDescription("Description_" + i);
 
 			Response response = client.target(REST_CUSTOMER_END_POINT).request(MediaType.APPLICATION_JSON)
 					.header("Authorization", jwe).post(Entity.json(customer), Response.class);
@@ -110,8 +112,9 @@ public class TesterCustomer {
 
 	private Customer createCustomerHelper() {
 		Customer customer = new Customer();
-		customer.setId("CUNO_" + UUID.randomUUID().toString());
+		customer.setCustomernumber("CUNO_" + UUID.randomUUID().toString());
 		customer.setName("A high valued customer");
+		customer.setDescription("A high valued customers description");
 		return customer;
 
 	}
@@ -267,8 +270,9 @@ public class TesterCustomer {
 		client.target(REST_CUSTOMER_END_POINT).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
 				.post(Entity.json(customer), Response.class);
 
-		Response response = client.target(REST_CUSTOMER_END_POINT).path(customer.getId())
-				.request(MediaType.APPLICATION_JSON).header("Authorization", jwe).get(Response.class);
+		String theId = String.valueOf(customer.getId());
+		Response response = client.target(REST_CUSTOMER_END_POINT).path(theId).request(MediaType.APPLICATION_JSON)
+				.header("Authorization", jwe).get(Response.class);
 
 		int status = response.getStatus();
 		if (status == OK) {

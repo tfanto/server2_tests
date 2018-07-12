@@ -29,10 +29,10 @@ public class _Test_SETUP_DATA {
 	private static boolean createLogins = false;
 	private static boolean createNumberSeries = false;
 
-	private static final String REST_CUSTOMER_END_POINT = "http://localhost:8080/javaee7/rest/customer";
-	private static final String REST_ITEM_END_POINT = "http://localhost:8080/javaee7/rest/item";
+	private static final String REST_CUSTOMER_END_POINT = "http://localhost:8080/server2/rest/customer";
+	private static final String REST_ITEM_END_POINT = "http://localhost:8080/server2/rest/item";
 	private static final String USER_REGISTRATION_END_POINT = "http://localhost:8080/auth/rest/user";
-	private static final String NUMBERSERIES_END_POINT = "http://localhost:8080/javaee7/rest/ns";
+	private static final String NUMBERSERIES_END_POINT = "http://localhost:8080/server2/rest/ns";
 
 	private static final String LOGIN_END_POINT = "http://localhost:8080/auth/rest/login";
 	private static final int NUMBER_OF_CUSTOMERS = 10000;
@@ -125,8 +125,9 @@ public class _Test_SETUP_DATA {
 		for (int i = 0; i < NUMBER_OF_CUSTOMERS; i++) {
 
 			Customer customer = new Customer();
-			customer.setId("CUNO_" + i);
+			customer.setCustomernumber("CUNO_" + i);
 			customer.setName("CustomerName_" + i);
+			customer.setDescription("Description_" + i);
 
 			Response response = client.target(REST_CUSTOMER_END_POINT).request(MediaType.APPLICATION_JSON)
 					.header("Authorization", jwe).post(Entity.json(customer), Response.class);
@@ -169,7 +170,7 @@ public class _Test_SETUP_DATA {
 			Item item = new Item();
 
 			String nbr = String.format("%05d", i);
-			item.setId("ITEM_" + nbr);
+			item.setItemnumber("ITEM_" + nbr);
 			item.setDescription("Artikelbeskrivning för ART_" + nbr);
 			int inStock = rnd.nextInt(2000) + 5;
 			item.setInStock(inStock);
