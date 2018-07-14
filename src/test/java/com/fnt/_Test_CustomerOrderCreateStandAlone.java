@@ -50,6 +50,8 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 	private String jwe;
 	private List<Long> customerIds;
 	private List<ItemView1> itemIds;
+	
+
 
 	_Test_CustomerOrderCreateStandAlone(float NUMBER_OF_CUSTOMERORDERS, int NUMBER_OF_LINES_PER_ORDER) {
 
@@ -87,12 +89,12 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 
 		// long then = System.currentTimeMillis();
 
-//		for (int i = 0; i < NUMBER_OF_CUSTOMERORDERS; i++) {
-			for (int i = 0; i < 1; i++) {
+		// for (int i = 0; i < NUMBER_OF_CUSTOMERORDERS; i++) {
+		for (int i = 0; i < 1; i++) {
 
 			CustomerOrder customerOrder = createCustomerOrderHelper();
 
-			Response response = client.target(REST_CUSTOMER_ORDER_END_POINT).request(MediaType.APPLICATION_JSON)
+			Response response = client.target(REST_CUSTOMER_ORDER_END_POINT).path("batch").request(MediaType.APPLICATION_JSON)
 					.header("Authorization", jwe).post(Entity.json(customerOrder), Response.class);
 
 			int status = response.getStatus();
@@ -125,7 +127,7 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 		int n = rnd.nextInt(customerIds.size());
 
 		CustomerOrderHead coh = new CustomerOrderHead();
-		coh.setCustomerId(customerIds.get(n));
+		coh.setCustomerid(customerIds.get(n));
 		coh.setDate(LocalDateTime.now());
 		coh.setStatus(5);
 

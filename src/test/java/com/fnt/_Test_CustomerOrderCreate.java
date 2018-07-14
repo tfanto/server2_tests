@@ -134,7 +134,7 @@ public class _Test_CustomerOrderCreate {
 		int n = rnd.nextInt(customerIds.size());
 
 		CustomerOrderHead coh = new CustomerOrderHead();
-		coh.setCustomerId(customerIds.get(n));
+		coh.setCustomerid(customerIds.get(n));
 		coh.setDate(LocalDateTime.now());
 		coh.setStatus(5);
 
