@@ -1,6 +1,6 @@
 package com.fnt;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -128,7 +128,7 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 
 		CustomerOrderHead coh = new CustomerOrderHead();
 		coh.setCustomerid(customerIds.get(n));
-		coh.setDate(LocalDateTime.now());
+		coh.setDate(LocalDate.now());
 		coh.setStatus(5);
 
 		return coh;
