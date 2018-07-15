@@ -55,6 +55,9 @@ public class _Test_SETUP_DATA {
 
 	private static Client client;
 	private static String jwe;
+	
+	static String items[] = { "skruv","spik","hammare","skruvmejsel","såg","yxa","pensel","skiftnyckel","tång","syl", };
+
 
 	@BeforeClass
 	public static void beforeClass() throws KeyLengthException, JsonProcessingException, JOSEException {
@@ -168,10 +171,12 @@ public class _Test_SETUP_DATA {
 		for (int i = 0; i < NUMBER_OF_ITEMS; i++) {
 
 			Item item = new Item();
+			
+			String itemName = items[rnd.nextInt(items.length)];
 
 			String nbr = String.format("%05d", i);
-			item.setItemnumber("ITEM_" + nbr);
-			item.setDescription("Artikelbeskrivning för ART_" + nbr);
+			item.setItemnumber(itemName + "_" + nbr);
+			item.setDescription( itemName + "artikelbeskrivning typ:" + nbr);
 			int inStock = rnd.nextInt(2000) + 5;
 			item.setInstock(inStock);
 			item.setOrderingpoint(item.getInstock() / 3);
