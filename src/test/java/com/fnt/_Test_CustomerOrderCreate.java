@@ -151,12 +151,12 @@ public class _Test_CustomerOrderCreate {
 			ItemView1 itno = itemIds.get(n);
 			CustomerOrderLine col = new CustomerOrderLine();
 			CustomerOrderLinePK primaryKey = new CustomerOrderLinePK();
-			primaryKey.setLineNumber(1);
-			col.setItemId(itno.getId());
-			col.setNumberOfItems(numberOfItems);
-			col.setPricePerItem(itno.getPrice());
+			primaryKey.setLineNumber(1L);
+			col.setItemid(itno.getId());
+			col.setNumberofitems(numberOfItems);
+			col.setPriceperitem(itno.getPrice());
 			col.setDate(coh.getDate());
-			col.setPrimaryKey(primaryKey);
+			col.setPrimarykey(primaryKey);
 			ret.add(col);
 		}
 		return ret;
