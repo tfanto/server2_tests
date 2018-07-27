@@ -225,9 +225,9 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 		long then = System.currentTimeMillis();
 		List<Thread> threads = new ArrayList<>();
 
-		float number_of_customerOrders_per_thread = 1000;
+		float number_of_customerOrders_per_thread = 10;
 		int number_of_threads = 10;
-		int number_of_lines_per_order = 1000;
+		int number_of_lines_per_order = 5;
 
 		for (int i = 0; i < number_of_threads; i++) {
 
