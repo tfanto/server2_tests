@@ -89,8 +89,7 @@ public class _Test_CustomerOrderCreate {
 
 			CustomerOrder customerOrder = createCustomerOrderHelper();
 
-			Response response = client.target(REST_CUSTOMER_ORDER_END_POINT).request(MediaType.APPLICATION_JSON)
-					.header("Authorization", jwe).post(Entity.json(customerOrder), Response.class);
+			Response response = client.target(REST_CUSTOMER_ORDER_END_POINT).path("batch").request(MediaType.APPLICATION_JSON).header("Authorization", jwe).post(Entity.json(customerOrder), Response.class);
 
 			int status = response.getStatus();
 			if (status == OK) {
@@ -151,7 +150,7 @@ public class _Test_CustomerOrderCreate {
 			ItemView1 itno = itemIds.get(n);
 			CustomerOrderLine col = new CustomerOrderLine();
 			CustomerOrderLinePK primaryKey = new CustomerOrderLinePK();
-			primaryKey.setLineNumber(1L);
+			primaryKey.setLineNumber(1L); // wil be fixed on server
 			col.setItemid(itno.getId());
 			col.setNumberofitems(numberOfItems);
 			col.setPriceperitem(itno.getPrice());
@@ -172,11 +171,9 @@ public class _Test_CustomerOrderCreate {
 	 * @throws JOSEException
 	 */
 
-	private static String getJWEFromSecurityServer(String login, String password)
-			throws JsonProcessingException, KeyLengthException, JOSEException {
+	private static String getJWEFromSecurityServer(String login, String password) throws JsonProcessingException, KeyLengthException, JOSEException {
 
-		Response response = client.target(LOGIN_END_POINT).path(login).path(password)
-				.request(MediaType.APPLICATION_JSON).get(Response.class);
+		Response response = client.target(LOGIN_END_POINT).path(login).path(password).request(MediaType.APPLICATION_JSON).get(Response.class);
 		if (response.getStatus() == 200) {
 			String jwe = response.getHeaderString("Authorization");
 			if (jwe == null) {
@@ -194,8 +191,7 @@ public class _Test_CustomerOrderCreate {
 
 	public static List<Long> getAllCustomerIDS() throws KeyLengthException, JsonProcessingException, JOSEException {
 
-		Response response = client.target(REST_CUSTOMER_END_POINT).path("ids").request(MediaType.APPLICATION_JSON)
-				.header("Authorization", jwe).get(Response.class);
+		Response response = client.target(REST_CUSTOMER_END_POINT).path("orderinginfo").request(MediaType.APPLICATION_JSON).header("Authorization", jwe).get(Response.class);
 		int status = response.getStatus();
 		if (status == OK) {
 			List<Long> theList = response.readEntity(new GenericType<List<Long>>() {
@@ -210,8 +206,7 @@ public class _Test_CustomerOrderCreate {
 
 	public static List<ItemView1> getAllItemIDS() throws KeyLengthException, JsonProcessingException, JOSEException {
 
-		Response response = client.target(REST_ITEM_END_POINT).path("orderinginfo").request(MediaType.APPLICATION_JSON)
-				.header("Authorization", jwe).get(Response.class);
+		Response response = client.target(REST_ITEM_END_POINT).path("orderinginfo").request(MediaType.APPLICATION_JSON).header("Authorization", jwe).get(Response.class);
 
 		int status = response.getStatus();
 		if (status == OK) {
@@ -229,8 +224,7 @@ public class _Test_CustomerOrderCreate {
 	@Test
 	public void browseQueue() {
 
-		Response response = client.target(REST_QUEUE_END_POINT).path("browse").request(MediaType.APPLICATION_JSON)
-				.header("Authorization", jwe).get(Response.class);
+		Response response = client.target(REST_QUEUE_END_POINT).path("browse").request(MediaType.APPLICATION_JSON).header("Authorization", jwe).get(Response.class);
 		System.out.println("status " + response.getStatus());
 
 	}
