@@ -176,7 +176,7 @@ public class _Test_SETUP_DATA {
 
 			String nbr = String.format("%05d", i);
 			item.setItemnumber(itemName + "_" + nbr);
-			item.setDescription( itemName + "artikelbeskrivning typ:" + nbr);
+			item.setDescription(nbr + "_beskrivning typ:" + itemName);
 			int inStock = rnd.nextInt(2000) + 5;
 			item.setInstock(inStock);
 			item.setOrderingpoint(item.getInstock() / 3);

@@ -89,8 +89,8 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 
 		// long then = System.currentTimeMillis();
 
-		// for (int i = 0; i < NUMBER_OF_CUSTOMERORDERS; i++) {
-		for (int i = 0; i < 1; i++) {
+		 for (int i = 0; i < NUMBER_OF_CUSTOMERORDERS; i++) {
+		//for (int i = 0; i < 1; i++) {
 
 			CustomerOrder customerOrder = createCustomerOrderHelper();
 
@@ -144,7 +144,7 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 			ItemView1 itno = itemIds.get(n);
 			CustomerOrderLine col = new CustomerOrderLine();
 			CustomerOrderLinePK primaryKey = new CustomerOrderLinePK();
-			primaryKey.setLineNumber(1L);
+			primaryKey.setLineNumber(1L); // fixed on server
 			col.setItemid(itno.getId());
 			col.setNumberofitems(numberOfItems);
 			col.setPriceperitem(itno.getPrice());
@@ -187,7 +187,7 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 
 	public List<Long> getAllCustomerIDS() throws KeyLengthException, JsonProcessingException, JOSEException {
 
-		Response response = client.target(REST_CUSTOMER_END_POINT).path("ids").request(MediaType.APPLICATION_JSON)
+		Response response = client.target(REST_CUSTOMER_END_POINT).path("orderinginfo").request(MediaType.APPLICATION_JSON)
 				.header("Authorization", jwe).get(Response.class);
 		int status = response.getStatus();
 		if (status == OK) {
@@ -225,9 +225,9 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 		long then = System.currentTimeMillis();
 		List<Thread> threads = new ArrayList<>();
 
-		float number_of_customerOrders_per_thread = 10;
-		int number_of_threads = 10;
-		int number_of_lines_per_order = 5;
+		float number_of_customerOrders_per_thread = 100;
+		int number_of_threads = 100;
+		int number_of_lines_per_order = 25;
 
 		for (int i = 0; i < number_of_threads; i++) {
 
