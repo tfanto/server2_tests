@@ -18,6 +18,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fnt.dto.UserDto;
 import com.fnt.entity.Customer;
 import com.fnt.entity.Item;
 import com.fnt.entity.NumberSerie;
@@ -26,7 +27,7 @@ import com.nimbusds.jose.KeyLengthException;
 
 public class _Test_SETUP_DATA {
 
-	private static boolean createLogins = false;
+	private static boolean createLogins = true;
 	private static boolean createNumberSeries = false;
 
 	private static final String REST_CUSTOMER_END_POINT = "http://localhost:8080/server2/rest/customer";
@@ -46,18 +47,13 @@ public class _Test_SETUP_DATA {
 	private int NOT_FOUND = 404;
 	private int PRECONDITION_FAILED = 412;
 
-	static String logins[] = { "thomas@fanto.se", "annalena@fanto.se", "madeleine@fanto.se", };
-	static String pwds[] = { "myPassword", "myAnnaLenaPassword", "myMadeleinePassword", };
-	static String roles[] = { "ADMIN", "USER", "GUEST", };
-
-	private static String uuu = "thomas@fanto.se";
-	private static String ppp = "myPassword";
+	private static String uid = "root";
+	private static String pwd = "root";
 
 	private static Client client;
 	private static String jwe;
-	
-	static String items[] = { "skruv","spik","hammare","skruvmejsel","såg","yxa","pensel","skiftnyckel","tång","syl", };
 
+	static String items[] = { "skruv", "spik", "hammare", "skruvmejsel", "såg", "yxa", "pensel", "skiftnyckel", "tång", "syl", };
 
 	@BeforeClass
 	public static void beforeClass() throws KeyLengthException, JsonProcessingException, JOSEException {
@@ -73,29 +69,21 @@ public class _Test_SETUP_DATA {
 			}
 		});
 
-		int nLogins = logins.length;
-		int nRoles = roles.length;
+		if (true) {
 
-		if (createLogins) {
+			UserDto dto = new UserDto();
+			dto.setLogin(uid);
+			dto.setPassword(pwd);
+			dto.addRole("ADMIN");
 
-			for (int l = 0; l < nLogins; l++) {
-				String login = logins[l];
-				String password = pwds[l];
+			Response response = client.target(USER_REGISTRATION_END_POINT).request(MediaType.APPLICATION_JSON).post(Entity.json(dto), Response.class);
+			System.out.println(response.getStatusInfo());
 
-				client.target(USER_REGISTRATION_END_POINT).path(login).path(password)
-						.request(MediaType.APPLICATION_JSON).post(null, Response.class);
-
-				for (int r = 0; r < nRoles; r++) {
-
-					String role = roles[r];
-					client.target(USER_REGISTRATION_END_POINT).path(login).path(role).path("Description for " + role)
-							.request(MediaType.APPLICATION_JSON).post(null, Response.class);
-				}
-			}
 		}
 
+		/*
 		// login
-		jwe = getJWEFromSecurityServer(uuu, ppp);
+		jwe = getJWEFromSecurityServer(uid, pwd);
 
 		if (createNumberSeries) {
 
@@ -103,25 +91,33 @@ public class _Test_SETUP_DATA {
 			ns.setName("CUSTOMER_ORDER");
 			ns.setValue(0);
 
-			client.target(NUMBERSERIES_END_POINT).request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-					.post(Entity.json(ns), Response.class);
+			client.target(NUMBERSERIES_END_POINT).request(MediaType.APPLICATION_JSON).header("Authorization", jwe).post(Entity.json(ns), Response.class);
 
 		}
+		*/
 
 	}
+	
+	@Test
+	public void testDummy() throws KeyLengthException, JsonProcessingException, JOSEException {
+		
+		Assert.assertTrue(true);
+		
+	}
+
+	
 
 	@Test
 	public void testCreateJWE() throws KeyLengthException, JsonProcessingException, JOSEException {
 
 		@SuppressWarnings("unused")
-		String jwe = getJWEFromSecurityServer(uuu, ppp);
+		String jwe = getJWEFromSecurityServer(uid, pwd);
 	}
 
 	@Test
 	public void createCustomers() throws KeyLengthException, JsonProcessingException, JOSEException {
 
-		client.target(REST_CUSTOMER_END_POINT).path("all").request(MediaType.APPLICATION_JSON)
-				.header("Authorization", jwe).delete(Response.class);
+		client.target(REST_CUSTOMER_END_POINT).path("all").request(MediaType.APPLICATION_JSON).header("Authorization", jwe).delete(Response.class);
 
 		long then = System.currentTimeMillis();
 
@@ -132,8 +128,7 @@ public class _Test_SETUP_DATA {
 			customer.setName("CustomerName_" + i);
 			customer.setDescription("Description_" + i);
 
-			Response response = client.target(REST_CUSTOMER_END_POINT).request(MediaType.APPLICATION_JSON)
-					.header("Authorization", jwe).post(Entity.json(customer), Response.class);
+			Response response = client.target(REST_CUSTOMER_END_POINT).request(MediaType.APPLICATION_JSON).header("Authorization", jwe).post(Entity.json(customer), Response.class);
 
 			int status = response.getStatus();
 			if (status == OK) {
@@ -163,15 +158,14 @@ public class _Test_SETUP_DATA {
 	@Test
 	public void createItems() throws KeyLengthException, JsonProcessingException, JOSEException {
 
-		client.target(REST_ITEM_END_POINT).path("all").request(MediaType.APPLICATION_JSON).header("Authorization", jwe)
-				.delete(Response.class);
+		client.target(REST_ITEM_END_POINT).path("all").request(MediaType.APPLICATION_JSON).header("Authorization", jwe).delete(Response.class);
 
 		long then = System.currentTimeMillis();
 
 		for (int i = 0; i < NUMBER_OF_ITEMS; i++) {
 
 			Item item = new Item();
-			
+
 			String itemName = items[rnd.nextInt(items.length)];
 
 			String nbr = String.format("%05d", i);
@@ -186,8 +180,7 @@ public class _Test_SETUP_DATA {
 			item.setPrice(price);
 			item.setPurchaseprice(item.getPrice() / 2);
 
-			Response response = client.target(REST_ITEM_END_POINT).request(MediaType.APPLICATION_JSON)
-					.header("Authorization", jwe).post(Entity.json(item), Response.class);
+			Response response = client.target(REST_ITEM_END_POINT).request(MediaType.APPLICATION_JSON).header("Authorization", jwe).post(Entity.json(item), Response.class);
 
 			int status = response.getStatus();
 			if (status == OK) {
@@ -224,11 +217,9 @@ public class _Test_SETUP_DATA {
 	 * @throws JOSEException
 	 */
 
-	private static String getJWEFromSecurityServer(String login, String password)
-			throws JsonProcessingException, KeyLengthException, JOSEException {
+	private static String getJWEFromSecurityServer(String login, String password) throws JsonProcessingException, KeyLengthException, JOSEException {
 
-		Response response = client.target(LOGIN_END_POINT).path(login).path(password)
-				.request(MediaType.APPLICATION_JSON).get(Response.class);
+		Response response = client.target(LOGIN_END_POINT).path(login).path(password).request(MediaType.APPLICATION_JSON).get(Response.class);
 
 		if (response.getStatus() == 200) {
 
