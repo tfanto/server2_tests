@@ -47,8 +47,8 @@ public class _Test_SETUP_DATA {
 	private int NOT_FOUND = 404;
 	private int PRECONDITION_FAILED = 412;
 
-	private static String uid = "root";
-	private static String pwd = "root";
+	private static String uid = "thomas@fanto.se";
+	private static String pwd = "thomas@fanto.se";
 
 	private static Client client;
 	private static String jwe;
@@ -75,11 +75,15 @@ public class _Test_SETUP_DATA {
 			dto.setLogin(uid);
 			dto.setPassword(pwd);
 			dto.addRole("ADMIN");
+			dto.setBlocked(false);
+			dto.setConfirmed(true);
 
 			Response response = client.target(USER_REGISTRATION_END_POINT).request(MediaType.APPLICATION_JSON).post(Entity.json(dto), Response.class);
 			System.out.println(response.getStatusInfo());
 
 		}
+		
+		System.out.println("STOPP");
 
 		/*
 		// login
