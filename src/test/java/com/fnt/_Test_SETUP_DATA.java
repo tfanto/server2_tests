@@ -69,7 +69,7 @@ public class _Test_SETUP_DATA {
 			}
 		});
 
-		if (true) {
+		if (false) {
 
 			UserDto dto = new UserDto();
 			dto.setLogin(uid);
@@ -82,12 +82,12 @@ public class _Test_SETUP_DATA {
 			System.out.println(response.getStatusInfo());
 
 		}
+		jwe = getJWEFromSecurityServer(uid, pwd);
 		
 		System.out.println("STOPP");
 
 		/*
 		// login
-		jwe = getJWEFromSecurityServer(uid, pwd);
 
 		if (createNumberSeries) {
 
