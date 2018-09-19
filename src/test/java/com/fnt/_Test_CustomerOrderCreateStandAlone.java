@@ -44,7 +44,7 @@ public class _Test_CustomerOrderCreateStandAlone implements Runnable {
 	static String pwds[] = { "myPassword", "myAnnaLenaPassword", "myMadeleinePassword", };
 
 	private String uuu = "thomas@fanto.se";
-	private String ppp = "myPassword";
+	private String ppp = "thomas";
 
 	private Client client;
 	private String jwe;

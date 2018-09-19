@@ -48,7 +48,7 @@ public class _Test_CustomerOrderCreate {
 	static String pwds[] = { "myPassword", "myAnnaLenaPassword", "myMadeleinePassword", };
 
 	private static String uuu = "thomas@fanto.se";
-	private static String ppp = "myPassword";
+	private static String ppp = "thomas";
 
 	private static Client client;
 	private static String jwe;
@@ -100,6 +100,15 @@ public class _Test_CustomerOrderCreate {
 			} else {
 				Assert.fail();
 			}
+			
+			try {
+				Thread.sleep(2500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 		}
 
 		long now = System.currentTimeMillis();

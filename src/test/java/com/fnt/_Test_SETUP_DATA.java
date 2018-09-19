@@ -48,7 +48,7 @@ public class _Test_SETUP_DATA {
 	private int PRECONDITION_FAILED = 412;
 
 	private static String uid = "thomas@fanto.se";
-	private static String pwd = "thomas@fanto.se";
+	private static String pwd = "thomas";
 
 	private static Client client;
 	private static String jwe;
